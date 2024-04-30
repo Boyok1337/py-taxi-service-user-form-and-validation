@@ -108,7 +108,7 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required()
-def car_driver_assignment(request, pk, driver_id):
+def car_driver_toggle_assignment(request, pk, driver_id):
     car = get_object_or_404(Car, id=pk)
     driver = get_object_or_404(Driver, id=driver_id)
 
