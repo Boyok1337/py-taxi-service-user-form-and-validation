@@ -108,14 +108,11 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required()
-def car_driver_toggle_assignment(request, pk, driver_id):
-    car = get_object_or_404(Car, id=pk)
-    driver = get_object_or_404(Driver, id=driver_id)
-
-    if request.method == "POST":
-        if car.drivers.filter(id=driver_id).exists():
-            car.drivers.remove(driver)
-        else:
-            car.drivers.add(driver)
-
-    return redirect("taxi:car-detail", pk=car.id)
+def car_driver_toggle_assignment(request, pk):
+    car = Car.objects.get(pk=pk)
+    if request.user in car.drivers.all():
+        car.drivers.remove(request.user)
+    else:
+        car.drivers.add(request.user)
+    car.save()
+    return redirect("taxi:car-detail", pk)
